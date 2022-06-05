@@ -6,16 +6,16 @@ import os
 class DevStats:
     TotAnsw = 0
     BEData = {"Not Web":0,"Front End":0,"Front End Only":0,"Back End":0,"Back End Only":0,"Full Stack":0}
-    BETech = {"JavaScript":0,"PHP":0,"Ruby":0,"Java":0,"C#":0,"Python":0}
+    BETech = {"JavaScript":0,"PHP":0,"Ruby":0,"Java":0,"C#":0,"Python":0}#,"Other":0}
     BETechEdge = {}
     BEShape = {}
 
-    tmpShapeData = [{},{},{},{},{},{}]    
+    tmpShapeData = [{},{},{},{},{},{},{}]    
 
     def __init__(self, TotAnsw):
         self.TotAnsw = TotAnsw
         self.BEData = {"Not Web":0,"Front End":0,"Front End Only":0,"Back End":0,"Back End Only":0,"Full Stack":0}
-        self.BETech = {"JavaScript":0,"PHP":0,"Ruby":0,"Java":0,"C#":0,"Python":0}
+        self.BETech = {"JavaScript":0,"PHP":0,"Ruby":0,"Java":0,"C#":0,"Python":0}#,"Other":0}
         self.BETechEdge = {}
         self.BEShape = {}
 
@@ -28,10 +28,14 @@ class DevStats:
         file.write(dataStr)
         file.close()
 
-    def extractData(self, fileVar, FrtEnd, BckEnd, BETechs):
+    def extractData(self, fileVar, FrtEnd, BETechs):
+        tmpBETech = set([])
+        for stack in BETechs.items():
+            tmpBETech = tmpBETech.union(stack[1])
+
         for index, rowVal in fileVar.iterrows():
             FETot = len(set(list(str(rowVal['WebframeHaveWorkedWith']).split(';'))) & FrtEnd)
-            BETot = len(set(list(str(rowVal['WebframeHaveWorkedWith']).split(';'))) & BckEnd)
+            BETot = len(set(list(str(rowVal['WebframeHaveWorkedWith']).split(';'))) & tmpBETech)
             devShape = []
 
             if FETot <= 0 and BETot <= 0:
@@ -51,6 +55,9 @@ class DevStats:
 
                 for techId, techVal in BETechs.items():
                     BELang = 1 if techId in list(str(rowVal['LanguageHaveWorkedWith']).split(';')) else 0
+                    if BELang == 0:
+                        BELang = len(set(list(str(rowVal['LanguageHaveWorkedWith']).split(';'))) & techVal)
+
                     BEfrmw = len(set(list(str(rowVal['WebframeHaveWorkedWith']).split(';'))) & techVal)
                     if BELang > 0 and BEfrmw > 0:
                         devShape.append(techId)
@@ -155,21 +162,21 @@ class DevStatsEncoder(JSONEncoder):
 def main():
     fileRaw = pd.read_csv('survey_results_public.csv')
 
-    FrtEnd = set(["Angular","Angular.js","Gatsby","jQuery","React.js","Svelte","Vue.js"])
-    BckEnd = set(["Express","PHP","Drupal","Laravel","Symfony","Ruby","Ruby on Rails","Spring","ASP.NET","ASP.NET Core","Django","FastAPI","Flask"])
+    FrtEnd = set(["Angular","Angular.js","Gatsby","jQuery","React.js","Svelte","Vue.js","HTML/CSS","TypeScript"])
     BETechs = {
-        "JavaScript":set(["Express"]),
+        "JavaScript":set(["Express","Clojure","Node.js"]),
         "PHP":set(["Drupal","Laravel","Symfony"]),
-        "Ruby":set(["Ruby on Rails"]),
-        "Java":set(["Spring"]),
-        "C#":set(["ASP.NET","ASP.NET Core"]),
+        "Ruby":set(["Ruby on Rails","Crystal"]),
+        "Java":set(["Spring","Groovy","Kotlin"]),
+        "C#":set(["ASP.NET","ASP.NET Core","F#"]),
         "Python":set(["Django","FastAPI","Flask"])
+#        "Other":set(["Dart","Delphi","Elixir","Erlang","Go","Haskell","Perl","Rust","C","C++","Scala","VBA"]),
     }
 
     fileVar = fileRaw[fileRaw['MainBranch'] == 'I am a developer by profession']
 
     dev21 = DevStats(len(fileVar))    
-    dev21.extractData(fileVar, FrtEnd, BckEnd, BETechs)
+    dev21.extractData(fileVar, FrtEnd, BETechs)
     dev21.sortData()
     #dev21.asPercent()
     dev21.serialise("SO21Range.json")
