@@ -1,0 +1,44 @@
+{
+    "TotAnsw": 58153,
+    "BEData": {
+        "Front End": 38402,
+        "Back End": 36083,
+        "Full Stack": 28160,
+        "Not Web": 11828,
+        "Front End Only": 10242,
+        "Back End Only": 7923
+    },
+    "BETech": {
+        "JavaScript": 10710,
+        "Python": 10027,
+        "C#": 7795,
+        "Java": 7467,
+        "PHP": 6297,
+        "Ruby": 3392
+    },
+    "BETechEdge": {
+        "JavaScript + Java": 10678,
+        "Java + Python": 3081,
+        "JavaScript + Python": 2288,
+        "PHP + Java": 2116,
+        "JavaScript + PHP": 1752,
+        "Java + C#": 1526,
+        "JavaScript + C#": 1169,
+        "PHP + Python": 1037,
+        "Ruby + Java": 827,
+        "C# + Python": 682,
+        "JavaScript + Ruby": 669,
+        "PHP + C#": 634,
+        "Ruby + Python": 547,
+        "PHP + Ruby": 295,
+        "Ruby + C#": 179
+    },
+    "BEShape": {
+        "1": 26040,
+        "2": 6919,
+        "3": 1386,
+        "4": 278,
+        "5": 42,
+        "6": 23
+    }
+}
