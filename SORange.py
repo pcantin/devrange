@@ -10,7 +10,7 @@ class DevStats:
     BETechEdge = {}
     BEShape = {}
 
-    tmpShapeData = [{},{},{},{},{},{},{}]    
+    tmpShapeData = [{},{},{},{},{},{},{}]
 
     def __init__(self, TotAnsw):
         self.TotAnsw = TotAnsw
@@ -128,7 +128,7 @@ class DevStats:
                 dataV = self.BETechEdge
                 gTitle = "Distribution of Backend Stacks Combinations"
                 gXlabel = "Backend Stacks Combinations"
-                gYlabel = "% of Backend Developers"
+                gYlabel = "% of Backend Dev. with 2+ stacks"
                 yLim = [0,50]
             case 4:
                 dataV = self.BEShape
@@ -178,9 +178,9 @@ def main():
     dev21 = DevStats(len(fileVar))    
     dev21.extractData(fileVar, FrtEnd, BETechs)
     dev21.sortData()
-    #dev21.asPercent()
-    dev21.serialise("SO21Range.json")
-    #dev21.graphData(1)
+    dev21.asPercent()
+    #dev21.serialise("SO21Range.json")
+    dev21.graphData(1)
 
 
 if __name__ == '__main__':
