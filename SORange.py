@@ -2,6 +2,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from json import JSONEncoder,dumps
 import os
+import sys
 
 class DevStats:
     TotAnsw = 0
@@ -148,7 +149,9 @@ class DevStats:
         ax.axes.set_xlabel(gXlabel)
         ax.axes.set_ylabel(gYlabel)
         ax.set_ylim(yLim)
-        plt.show()
+        plt.tight_layout()
+#        plt.show()
+        plt.savefig("test_{title}.png".format(title=gTitle), format = "png")
 
 
 class DevStatsEncoder(JSONEncoder):
@@ -175,12 +178,15 @@ def main():
 
     fileVar = fileRaw[fileRaw['MainBranch'] == 'I am a developer by profession']
 
-    dev21 = DevStats(len(fileVar))    
+    dev21 = DevStats(len(fileVar))
     dev21.extractData(fileVar, FrtEnd, BETechs)
     dev21.sortData()
     dev21.asPercent()
     #dev21.serialise("SO21Range.json")
     dev21.graphData(1)
+    dev21.graphData(2)
+    dev21.graphData(3)
+    dev21.graphData(4)
 
 
 if __name__ == '__main__':
