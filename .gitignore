@@ -1,3 +1,4 @@
 devrange.code-workspace
 survey_results_public.csv
 *.png
+venv/
